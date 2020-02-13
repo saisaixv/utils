@@ -15,7 +15,7 @@ func (t *testTask)Run()  {
 func main()  {
 	crontab:=cron.NewCrontab()
 	task:=&testTask{}
-	if err:=crontab.AddByID("1","* * * * *",task);err!=nil{
+	if err:=crontab.AddByJob("1","* * * * *",task);err!=nil{
 		fmt.Printf("error to add crontab task:%s",err)
 		os.Exit(-1)
 	}

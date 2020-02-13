@@ -59,7 +59,7 @@ func (c *Crontab)DelByID(id string)  {
 	delete(c.ids,id)
 }
 
-func (c *Crontab)AddByID(id string,spec string,cmd cron_v3.Job)error  {
+func (c *Crontab)AddByJob(id string,spec string,cmd cron_v3.Job)error  {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 
