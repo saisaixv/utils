@@ -3,7 +3,7 @@ package main
 import(
 	"os"
 	"fmt"
-	"utils/cron"
+	"github.com/saisaixv/utils/cron"
 )
 
 type testTask struct{}
