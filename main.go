@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+
 	"github.com/saisaixv/utils/crypto"
 )
 
@@ -57,10 +58,10 @@ func main() {
 		fmt.Printf("Login:json.Marshal error = %s\n", err.Error())
 	}
 
-	ret := crypto.AesEncrypt(string(bArr), "abcdefghabcdefgh")
+	ret := crypto.EncryptWithAES("abcdefghabcdefgh", string(bArr))
 	fmt.Println(ret)
 
-	ret = crypto.AesDecrypt(ret, "abcdefghabcdefgh")
+	ret = crypto.DecryptWithAES("abcdefghabcdefgh", ret)
 	fmt.Println(ret)
 }
 
