@@ -43,6 +43,9 @@ func Get() redis.Conn {
 
 func DoStrSet(key string, value interface{}) error {
 	conn := Get()
+	if conn == nil {
+		return fmt.Errorf("conn is nil")
+	}
 	defer conn.Close()
 
 	_, err := conn.Do("SET", key, value)
@@ -51,12 +54,18 @@ func DoStrSet(key string, value interface{}) error {
 
 func DoStrGet(key string) (string, error) {
 	conn := Get()
+	if conn == nil {
+		return "", fmt.Errorf("conn is nil")
+	}
 	defer conn.Close()
 	return redis.String(conn.Do("GET", key))
 }
 
 func DoExpire(key string, expire time.Duration) error {
 	conn := Get()
+	if conn == nil {
+		return fmt.Errorf("conn is nil")
+	}
 	defer conn.Close()
 	_, err := conn.Do("EXPIRE", key, expire)
 	return err
@@ -64,6 +73,9 @@ func DoExpire(key string, expire time.Duration) error {
 
 func DoExists(key string) (bool, error) {
 	conn := Get()
+	if conn == nil {
+		return false, fmt.Errorf("conn is nil")
+	}
 	defer conn.Close()
 	return redis.Bool(conn.Do("EXISTS", key))
 }
