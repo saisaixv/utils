@@ -83,7 +83,7 @@ func DoExists(key string) (bool, error) {
 func DoDel(key string) error {
 	conn := Get()
 	if conn == nil {
-		return false, fmt.Errorf("conn is nil")
+		return fmt.Errorf("conn is nil")
 	}
 	defer conn.Close()
 	_, err := conn.Do("DEL", key)
