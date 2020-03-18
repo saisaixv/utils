@@ -1,14 +1,15 @@
 package db
 
 import (
-	"database/sql"
 	"fmt"
+
+	"github.com/jinzhu/gorm"
 )
 
 var Client *DB
 
 type DB struct {
-	Client *sql.DB
+	Client *gorm.DB
 }
 
 func Release() error {
