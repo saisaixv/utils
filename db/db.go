@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-var Client DB
+var Client *DB
 
 type DB struct {
 	Client *sql.DB
