@@ -20,5 +20,5 @@ func NewLogMux(out io.Writer, prefix string, flags int) *LogMux {
 }
 
 func (m *LogMux) Output(level int, s string) error {
-	return m.l.Output("[" + LevelName(level) + "]" + " " + s)
+	return m.l.Output(4, "["+LevelName(level)+"]"+" "+s)
 }

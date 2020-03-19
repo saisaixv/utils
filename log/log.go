@@ -2,7 +2,6 @@ package log
 
 import (
 	"fmt"
-	"io"
 	"log"
 	"log/syslog"
 	"os"
@@ -56,7 +55,7 @@ func LevelName(level int) string {
 }
 
 type Muxer interface {
-	Output(level, s string) error
+	Output(level int, s string) error
 }
 
 type Logger struct {
@@ -66,7 +65,7 @@ type Logger struct {
 }
 
 func New(level int, out ...Muxer) *Logger {
-	outs := make([]io.Writer, 0)
+	outs := make([]Muxer, 0)
 	for _, o := range out {
 		outs = append(outs, o)
 	}
@@ -79,9 +78,15 @@ func (l *Logger) output(level int, msg string) {
 	defer l.mu.Unlock()
 
 	for i := 0; i < len(l.outs); i++ {
-		lv := levels[level]
-		l.outs[i].Write([]byte(fmt.Sprintf("[%s] +%s", lv, msg)))
+		l.outs[i].Output(level, msg)
 	}
+}
+
+func (l *Logger) Output(level, a ...interface{}) error {
+	if level <= l.level {
+		return l.output(level, fmt.Sprint(a...))
+	}
+	return nil
 }
 
 var std = New(LOG_DEBUG, NewLogMux(os.Stderr, "", LstdFlags|Lshortfile))
