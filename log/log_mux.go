@@ -19,6 +19,6 @@ func NewLogMux(out io.Writer, prefix string, flags int) *LogMux {
 	return m
 }
 
-func (m *LogMux) Output(level, calldepth int, s string) error {
-	return m.l.Output(calldepth, "["+LevelName(level)+"]"+" "+s)
+func (m *LogMux) Output(level int, s string) error {
+	return m.l.Output("[" + LevelName(level) + "]" + " " + s)
 }

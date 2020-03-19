@@ -5,6 +5,8 @@ import (
 	"io"
 	"log"
 	"log/syslog"
+	"os"
+	"strconv"
 	"sync"
 )
 
@@ -42,13 +44,28 @@ var (
 	}
 )
 
+const (
+	namePrefix = "LEVEL"
+)
+
+func LevelName(level int) string {
+	if name, ok := levels[level]; ok {
+		return name
+	}
+	return namePrefix + strconv.Itoa(level)
+}
+
+type Muxer interface {
+	Output(level, s string) error
+}
+
 type Logger struct {
 	mu    sync.Mutex
 	level int
-	outs  []io.Writer
+	outs  []Muxer
 }
 
-func New(level int, out ...io.Writer) *Logger {
+func New(level int, out ...Muxer) *Logger {
 	outs := make([]io.Writer, 0)
 	for _, o := range out {
 		outs = append(outs, o)
@@ -70,5 +87,5 @@ func (l *Logger) output(level int, msg string) {
 var std = New(LOG_DEBUG, NewLogMux(os.Stderr, "", LstdFlags|Lshortfile))
 
 func Info(msg ...interface{}) {
-	std.Output(LOG_INFO, levelDepth, msg...)
+	std.Output(LOG_INFO, msg...)
 }
