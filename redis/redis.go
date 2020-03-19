@@ -61,7 +61,7 @@ func DoStrGet(key string) (string, error) {
 	return redis.String(conn.Do("GET", key))
 }
 
-func DoExpire(key string, expire time.Duration) error {
+func DoExpire(key string, expire int) error {
 	conn := Get()
 	if conn == nil {
 		return fmt.Errorf("conn is nil")
