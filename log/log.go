@@ -73,13 +73,14 @@ func New(level int, out ...Muxer) *Logger {
 	return &Logger{level: level, outs: outs}
 }
 
-func (l *Logger) output(level int, msg string) {
+func (l *Logger) output(level int, msg string) error {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 
 	for i := 0; i < len(l.outs); i++ {
 		l.outs[i].Output(level, msg)
 	}
+	return nil
 }
 
 func (l *Logger) Output(level int, a ...interface{}) error {
