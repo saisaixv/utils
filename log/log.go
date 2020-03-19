@@ -82,7 +82,7 @@ func (l *Logger) output(level int, msg string) {
 	}
 }
 
-func (l *Logger) Output(level, a ...interface{}) error {
+func (l *Logger) Output(level int, a ...interface{}) error {
 	if level <= l.level {
 		return l.output(level, fmt.Sprint(a...))
 	}
