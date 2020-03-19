@@ -1,11 +1,11 @@
 package log
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"log/syslog"
 	"sync"
-	"fmt"
 )
 
 const (
@@ -48,12 +48,12 @@ type Logger struct {
 	outs  []io.Writer
 }
 
-func New(level int,out ...io.Writer) *Logger {
-	outs := make([]io.Writer,0)
+func New(level int, out ...io.Writer) *Logger {
+	outs := make([]io.Writer, 0)
 	for _, o := range out {
 		outs = append(outs, o)
 	}
-	
+
 	return &Logger{level: level, outs: outs}
 }
 
@@ -61,14 +61,14 @@ func (l *Logger) output(level int, msg string) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 
-	for i:=0;i<len(l.outs);i++{
-		lv:=levels[level]
-		l.outs[i].Write([]byte(fmt.Sprintf("[%s] +%s",lv,msg)))
+	for i := 0; i < len(l.outs); i++ {
+		lv := levels[level]
+		l.outs[i].Write([]byte(fmt.Sprintf("[%s] +%s", lv, msg)))
 	}
 }
 
-func (l *Logger) Info(msg interface{}) {
-	if l.level<LOG_INFO{
-		l.output(l.level,fmt.Sprint(msg))
-	}
+var std = New(LOG_DEBUG, NewLogMux(os.Stderr, "", LstdFlags|Lshortfile))
+
+func Info(msg ...interface{}) {
+	std.Output(LOG_INFO, levelDepth, msg...)
 }

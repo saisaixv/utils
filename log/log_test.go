@@ -1,11 +1,11 @@
 package log
 
-import(
+import (
 	"testing"
-	"os"
+
+	"github.com/labstack/gommon/log"
 )
 
-func Info_test(t *testing.T)  {
-	logger:=New(LOG_INFO,os.Stderr)
-	logger.Info("hello world")
+func Info_test(t *testing.T) {
+	log.Info("hello world")
 }
